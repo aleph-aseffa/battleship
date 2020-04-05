@@ -1,9 +1,11 @@
 import pygame
+import random
 
 
 class Board:
 
     def __init__(self):
+        self.ship_locations = set()
         width = 1200
         height = 600
         self.win = pygame.display.set_mode((width, height))
@@ -13,6 +15,7 @@ class Board:
 
         white = (255, 255, 255)
         black = (0, 0, 0)
+        blue = (0, 0, 255)
         self.win.fill(white)
         pygame.display.set_caption("Battleship")
 
@@ -29,7 +32,91 @@ class Board:
 
             i += 1
 
+        # randomly generate the ship locations
+        self.create_ships()
+
+        # draw the ships on the user's board
+        for ship in self.ship_locations:
+            pygame.draw.rect(self.win, blue, (ship[0]*50, ship[1]*50, 50, 50), 0)
+
         pygame.display.update()
 
+    def create_ships(self):
 
+        self.ship_bounds(4)
 
+        self.ship_bounds(3)
+        self.ship_bounds(3)
+
+        self.ship_bounds(2)
+        self.ship_bounds(2)
+        self.ship_bounds(2)
+
+        self.ship_bounds(1)
+        self.ship_bounds(1)
+        self.ship_bounds(1)
+        self.ship_bounds(1)
+
+        print(self.ship_locations)
+
+        return None
+
+    def ship_bounds(self, size):
+        random.seed()
+        valid = False
+
+        while not valid:  # continue to search for locations for the ship until a valid one is found
+            direction = random.randint(0, 3)  # 0 = left, 1 = right, 2 = up, 3 = down
+
+            # designates left-bound x-coordinate of the first block of the ship
+            begin = (random.randint(0, 9), random.randint(0, 9))
+            b_x = begin[0]  # x-coord
+            b_y = begin[1]  # y-coord
+
+            if begin not in self.ship_locations:  # if the location is not occupied by a ship already
+
+                if direction == 0:
+                    if b_x - (size-1) >= 0:
+                        end = (b_x - (size-1), b_y)
+                        i = 0
+                        curr = end[0]
+                        while i < size:
+                            self.ship_locations.add((curr, b_y))
+                            curr += 1
+                            i += 1
+                        return begin, end
+
+                elif direction == 1:
+                    if b_x + (size-1) <= 9:
+                        end = (b_x + (size-1), b_y)
+                        i = 0
+                        curr = end[0]
+                        while i < size:
+                            self.ship_locations.add((curr, b_y))
+                            curr -= 1
+                            i += 1
+                        return begin, end
+
+                elif direction == 2:
+                    if b_y + (size-1) <= 9:
+                        end = (b_x, b_y + (size-1))
+                        i = 0
+                        curr = end[1]
+                        while i < size:
+                            self.ship_locations.add((b_x, curr))
+                            curr -= 1
+                            i += 1
+                        return begin, end
+
+                else:
+                    if b_y - (size-1) >= 0:
+                        end = (b_x, b_y - (size-1))
+                        i = 0
+                        curr = end[1]
+                        while i < size:
+                            self.ship_locations.add((b_x, curr))
+                            curr += 1
+                            i += 1
+                        return begin, end
+            else:
+                valid = False
