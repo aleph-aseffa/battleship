@@ -11,6 +11,8 @@ class Board:
         height = 600
         self.win = pygame.display.set_mode((width, height))
         self.draw_board()
+        self.player_hit_ships = 0
+        self.ai_hit_ships = 0
 
     def draw_board(self):
 
@@ -154,10 +156,19 @@ class Board:
             else:
                 valid = False
 
-    def draw_x_sign(self, x, y):
+    def draw_x_sign(self, x, y):  # only called when the user clicks, not the ai
         """
         :param x: x-coordinate (top-left)
         :param y: y-coordinate (top-left)
         :return:
         """
+        red = (255,0,0)
         # TODO: complete function.
+        if (x, y) in self.ai_ship_locations:
+            self.ai_hit_ships += 1
+
+        if 11 < x < 22 and y < 10:
+            pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
+            pygame.display.update()
+
+        return
