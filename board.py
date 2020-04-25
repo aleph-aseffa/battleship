@@ -5,7 +5,8 @@ import random
 class Board:
 
     def __init__(self):
-        self.ship_locations = set()
+        self.player_ship_locations = set()
+        self.ai_ship_locations = set()
         width = 1200
         height = 600
         self.win = pygame.display.set_mode((width, height))
@@ -36,32 +37,47 @@ class Board:
         self.create_ships()
 
         # draw the ships on the user's board
-        for ship in self.ship_locations:
+        for ship in self.player_ship_locations:
             pygame.draw.rect(self.win, blue, (ship[0]*50, ship[1]*50, 50, 50), 0)
 
         pygame.display.update()
 
     def create_ships(self):
 
-        self.ship_bounds(4)
+        self.ship_bounds(4, 0)
+        self.ship_bounds(4, 1)
 
-        self.ship_bounds(3)
-        self.ship_bounds(3)
+        self.ship_bounds(3, 0)
+        self.ship_bounds(3, 1)
+        self.ship_bounds(3, 0)
+        self.ship_bounds(3, 1)
 
-        self.ship_bounds(2)
-        self.ship_bounds(2)
-        self.ship_bounds(2)
+        self.ship_bounds(2, 0)
+        self.ship_bounds(2, 1)
+        self.ship_bounds(2, 0)
+        self.ship_bounds(2, 1)
+        self.ship_bounds(2, 0)
+        self.ship_bounds(2, 1)
 
-        self.ship_bounds(1)
-        self.ship_bounds(1)
-        self.ship_bounds(1)
-        self.ship_bounds(1)
+        self.ship_bounds(1, 0)
+        self.ship_bounds(1, 1)
+        self.ship_bounds(1, 0)
+        self.ship_bounds(1, 1)
+        self.ship_bounds(1, 0)
+        self.ship_bounds(1, 1)
+        self.ship_bounds(1, 0)
+        self.ship_bounds(1, 1)
 
-        print(self.ship_locations)
+        print(self.player_ship_locations)
 
         return None
 
-    def ship_bounds(self, size):
+    def ship_bounds(self, size, val):
+        """
+        :param size:
+        :param val: 0 = player, 1 = AI
+        :return:
+        """
         random.seed()
         valid = False
 
@@ -73,7 +89,12 @@ class Board:
             b_x = begin[0]  # x-coord
             b_y = begin[1]  # y-coord
 
-            if begin not in self.ship_locations:  # if the location is not occupied by a ship already
+            if val == 0:
+                proceed = begin not in self.player_ship_locations
+            else:
+                proceed = begin not in self.ai_ship_locations
+
+            if proceed:  # if the location is not occupied by a ship already
 
                 if direction == 0:
                     if b_x - (size-1) >= 0:
@@ -81,7 +102,10 @@ class Board:
                         i = 0
                         curr = end[0]
                         while i < size:
-                            self.ship_locations.add((curr, b_y))
+                            if val == 0:
+                                self.player_ship_locations.add((curr, b_y))
+                            else:
+                                self.ai_ship_locations.add((curr, b_y))
                             curr += 1
                             i += 1
                         return begin, end
@@ -92,7 +116,10 @@ class Board:
                         i = 0
                         curr = end[0]
                         while i < size:
-                            self.ship_locations.add((curr, b_y))
+                            if val == 0:
+                                self.player_ship_locations.add((curr, b_y))
+                            else:
+                                self.ai_ship_locations.add((curr, b_y))
                             curr -= 1
                             i += 1
                         return begin, end
@@ -103,7 +130,10 @@ class Board:
                         i = 0
                         curr = end[1]
                         while i < size:
-                            self.ship_locations.add((b_x, curr))
+                            if val == 0:
+                                self.player_ship_locations.add((b_x, curr))
+                            else:
+                                self.ai_ship_locations.add((b_x, curr))
                             curr -= 1
                             i += 1
                         return begin, end
@@ -114,9 +144,20 @@ class Board:
                         i = 0
                         curr = end[1]
                         while i < size:
-                            self.ship_locations.add((b_x, curr))
+                            if val == 0:
+                                self.player_ship_locations.add((b_x, curr))
+                            else:
+                                self.ai_ship_locations.add((b_x, curr))
                             curr += 1
                             i += 1
                         return begin, end
             else:
                 valid = False
+
+    def draw_x_sign(self, x, y):
+        """
+        :param x: x-coordinate (top-left)
+        :param y: y-coordinate (top-left)
+        :return:
+        """
+        # TODO: complete function.

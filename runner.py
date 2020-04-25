@@ -2,9 +2,15 @@ import pygame
 import board
 
 
+def register_click(board, coords):
+    # TODO: complete function
+    # board.draw_x_sign(x, )
+    pass
+
+
 def main():
 
-    board.Board()
+    game_board = board.Board()
 
     run = True
     clock = pygame.time.Clock()
@@ -16,6 +22,11 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                pos = event.pos
+                register_click(game_board, pos)
+
 
 
 main()
