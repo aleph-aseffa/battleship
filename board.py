@@ -156,13 +156,19 @@ class Board:
             else:
                 valid = False
 
-    def draw_x_sign(self, x, y):  # only called when the user clicks, not the ai
+    def draw_x_sign(self, x, y, p):  # only called when the user clicks, not the ai
         """
         :param x: x-coordinate (top-left)
         :param y: y-coordinate (top-left)
+        :param p: Player object
         :return:
         """
-        red = (255,0,0)
+        red = (255, 0, 0)
+
+        if (x, y) in p.tried_positions:
+            return False
+        else:
+            p.tried_positions.add((x, y))
 
         if (x, y) in self.ai_ship_locations:
             self.ai_hit_ships += 1
@@ -170,5 +176,19 @@ class Board:
         if 11 < x < 22 and y < 10:
             pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
             pygame.display.update()
+            return True
 
-        return
+        return False
+
+    def register_ai_hit(self, coord):
+        ship_hit = False
+        red = (255, 0, 0)
+
+        if coord in self.player_ship_locations:
+            self.player_hit_ships += 1
+            ship_hit = True
+
+        pygame.draw.rect(self.win, red, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
+        pygame.display.update()
+
+        return ship_hit
