@@ -3,7 +3,7 @@ import board
 
 
 def register_click(board, coords):
-    # TODO: complete function
+    
     board.draw_x_sign(coords[0]//50, coords[1]//50)
 
 
