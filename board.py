@@ -163,7 +163,7 @@ class Board:
         :return:
         """
         red = (255,0,0)
-        # TODO: complete function.
+
         if (x, y) in self.ai_ship_locations:
             self.ai_hit_ships += 1
 
