@@ -5,20 +5,28 @@ import random
 class Board:
 
     def __init__(self):
-        self.player_ship_locations = set()
-        self.ai_ship_locations = set()
-        width = 1200
-        height = 600
-        self.win = pygame.display.set_mode((width, height))
+        """
+        Initialize an instance of the Board class.
+        """
+        self.player_ship_locations = set()  # keeps track of where the player's ships are located.
+        self.ai_ship_locations = set()  # keeps track of where the ai's ships are located.
+        width = 1200  # resolution of game display window.
+        height = 600  # resolution of game display window.
+        self.win = pygame.display.set_mode((width, height))  # game display window instance.
         self.draw_board()
-        self.player_hit_ships = 0
-        self.ai_hit_ships = 0
+        self.player_hit_ships = 0  # counter of how many of the player's ships have been hit.
+        self.ai_hit_ships = 0  # counter of how many of the ai's ships have been hit.
 
     def draw_board(self):
-
+        """
+        Draw the game board on the display window.
+        :return: None.
+        """
+        # RGB values of selected colors:
         white = (255, 255, 255)
         black = (0, 0, 0)
         blue = (0, 0, 255)
+
         self.win.fill(white)
         pygame.display.set_caption("Battleship")
 
@@ -45,15 +53,21 @@ class Board:
         pygame.display.update()
 
     def create_ships(self):
-
+        """
+        Generates the battleships for the player and for the AI.
+        :return: None.
+        """
+        # Generate two 4x1 ships
         self.ship_bounds(4, 0)
         self.ship_bounds(4, 1)
 
+        # Generate four 3x1 ships
         self.ship_bounds(3, 0)
         self.ship_bounds(3, 1)
         self.ship_bounds(3, 0)
         self.ship_bounds(3, 1)
 
+        # Generate six 2x1 ships
         self.ship_bounds(2, 0)
         self.ship_bounds(2, 1)
         self.ship_bounds(2, 0)
@@ -61,6 +75,7 @@ class Board:
         self.ship_bounds(2, 0)
         self.ship_bounds(2, 1)
 
+        # Generate eight 1x1 ships
         self.ship_bounds(1, 0)
         self.ship_bounds(1, 1)
         self.ship_bounds(1, 0)
@@ -69,8 +84,6 @@ class Board:
         self.ship_bounds(1, 1)
         self.ship_bounds(1, 0)
         self.ship_bounds(1, 1)
-
-        print(self.player_ship_locations)
 
         return None
 
@@ -91,6 +104,7 @@ class Board:
             b_x = begin[0]  # x-coord
             b_y = begin[1]  # y-coord
 
+            # check if the current starting location for the ship is not already occupied
             if val == 0:
                 proceed = begin not in self.player_ship_locations
             else:
@@ -156,23 +170,27 @@ class Board:
             else:
                 valid = False
 
-    def draw_x_sign(self, x, y, p):  # only called when the user clicks, not the ai
+    def user_hit(self, x, y, p):  # only called when the user clicks, not the ai
         """
-        :param x: x-coordinate (top-left)
-        :param y: y-coordinate (top-left)
+        Registers the user's click.
+        :param x: int, x-coordinate (top-left)
+        :param y: int, y-coordinate (top-left)
         :param p: Player object
-        :return:
+        :return: bool: whether or not the player has hit a ship
         """
         red = (255, 0, 0)
 
+        # check if user has already clicked on this box
         if (x, y) in p.tried_positions:
             return False
         else:
             p.tried_positions.add((x, y))
 
+        # check if the box contains a ship
         if (x, y) in self.ai_ship_locations:
             self.ai_hit_ships += 1
 
+        # update display to show the hit
         if 11 < x < 22 and y < 10:
             pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
             pygame.display.update()
@@ -181,6 +199,11 @@ class Board:
         return False
 
     def register_ai_hit(self, coord):
+        """
+        Registers the AI's click.
+        :param coord: int, the coordinates of the box the AI hit.
+        :return: bool, whether or not the AI hit a player's ship.
+        """
         ship_hit = False
         red = (255, 0, 0)
 
