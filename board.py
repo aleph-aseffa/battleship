@@ -179,24 +179,25 @@ class Board:
         :return: bool: whether or not the player has hit a ship
         """
         red = (255, 0, 0)
+        green = (0, 255, 0)
 
         # check if user has already clicked on this box
-        if (x, y) in p.tried_positions:
+        if (x-12, y) in p.tried_positions:  # (x-12 to get rid of the offset on x values)
             return False
         else:
-            p.tried_positions.add((x, y))
+            p.tried_positions.add((x-12, y))
 
-        # check if the box contains a ship
-        if (x, y) in self.ai_ship_locations:
-            self.ai_hit_ships += 1
-
-        # update display to show the hit
         if 11 < x < 22 and y < 10:
-            pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
+            # check if the box contains a ship and update display accordingly
+            if (x-12, y) in self.ai_ship_locations:
+                self.ai_hit_ships += 1
+                pygame.draw.rect(self.win, green, (x * 50, y * 50, 50, 50), 0)
+            else:
+                pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
             pygame.display.update()
             return True
-
-        return False
+        else:
+            return False
 
     def register_ai_hit(self, coord):
         """
@@ -206,12 +207,14 @@ class Board:
         """
         ship_hit = False
         red = (255, 0, 0)
+        green = (0, 255, 0)
 
         if coord in self.player_ship_locations:
+            pygame.draw.rect(self.win, green, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
             self.player_hit_ships += 1
             ship_hit = True
-
-        pygame.draw.rect(self.win, red, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
+        else:
+            pygame.draw.rect(self.win, red, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
         pygame.display.update()
 
         return ship_hit

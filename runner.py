@@ -2,6 +2,7 @@ import pygame
 import board
 import player
 import ai
+import time
 
 
 def register_click(bd, coords, p):
@@ -30,7 +31,7 @@ def main():
 
         # if all the ships of the player or of the AI have been hit, end the game.
         if game_board.player_hit_ships == 20 or game_board.ai_hit_ships == 20:
-            break
+            run = False
 
         # process each event.
         for event in pygame.event.get():
@@ -43,6 +44,7 @@ def main():
                 valid = register_click(game_board, pos, p1)
 
                 if valid:
+                    time.sleep(0.5)  # slight delay before AI makes a move
                     comp_move = comp.make_move()
                     game_board.register_ai_hit(comp_move)
 
