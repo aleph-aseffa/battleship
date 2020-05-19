@@ -219,7 +219,7 @@ class Board:
 
         return ship_hit
 
-    def display_message(self, message):
+    def fullscreen_message(self, message):
         """
         Overwrites the screen with the given message
         :param message: str, the message to display
@@ -238,3 +238,20 @@ class Board:
         self.win.blit(text, text_rect)
 
         pygame.display.update()
+
+    def small_text(self, message, coords):
+        """
+        Writes the given message to the screen at the specified coordinates
+        :param message: str, the message to display
+        :param coords: tuple (int, int), the coordinates at which to display the text
+        :return: None
+        """
+        pygame.font.init()
+        black = (0, 0, 0)
+
+        font = pygame.font.Font('freesansbold.ttf', 32)
+        text = font.render(message, True, black)
+        text_rect = text.get_rect()
+        text_rect.center = coords
+
+        self.win.blit(text, text_rect)

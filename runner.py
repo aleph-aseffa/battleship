@@ -33,9 +33,9 @@ def main():
         if game_board.player_hit_ships == 20 or game_board.ai_hit_ships == 20:
             # declare the winner and terminate the game
             if game_board.player_hit_ships == 20:
-                game_board.display_message("AI has won!")
+                game_board.fullscreen_message("AI has won!")
             else:
-                game_board.display_message("Player has won!")
+                game_board.fullscreen_message("Player has won!")
             time.sleep(3)
             pygame.quit()
             run = False
@@ -43,6 +43,7 @@ def main():
 
         # process each event.
         for event in pygame.event.get():
+            game_board.small_text("test", (100, 550))
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()
