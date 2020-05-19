@@ -30,6 +30,14 @@ class Board:
         self.win.fill(white)
         pygame.display.set_caption("Battleship")
 
+        # headers of the game boards
+        self.small_text("", "Your Board", 32, (315, 25), black)
+        self.small_text("", "AI's Board", 32, (900, 25), black)
+
+        # counter of how many ships each player has hit
+        self.small_text("", "Num hit: 0", 25, (280, 575), black)
+        self.small_text("", "Num hit: 0", 25, (880, 575), black)
+
         # draw grids
         i = 0
         while i < 11:
@@ -240,24 +248,31 @@ class Board:
 
         pygame.display.update()
 
-    def small_text(self, message, coords):
+    def small_text(self, old_message, new_message, font_size, coords, color):
         """
         Overwrites the previously displayed text and then writes the given message to
             the screen at the specified coordinates.
-        :param message: str, the message to display
+        :param old_message: str, the message to get rid of
+        :param new_message: str, the message to display
+        :param font_size: int, the font size of the message
         :param coords: tuple (int, int), the coordinates at which to display the text
+        :param color: tuple (int, int, int), the RGB values of the desired color
         :return: None
         """
         pygame.font.init()
-        white = (255, 255, 255)
-        black = (0, 0, 0)
+        font = pygame.font.Font('freesansbold.ttf', font_size)
 
         # overwrite previous text
-        pygame.draw.rect(self.win, white, (coords[0], coords[1], 200, 200))
+        pygame.draw.rect(self.win, (255, 255, 255), (coords[0], coords[1], 300, 300))
+        text = font.render(old_message, True, (255, 255, 255))
+        text_rect = text.get_rect()
+        text_rect.center = coords
+
+        self.win.blit(text, text_rect)
 
         # write the new text
-        font = pygame.font.Font('freesansbold.ttf', 32)
-        text = font.render(message, True, black)
+
+        text = font.render(new_message, True, color)
         text_rect = text.get_rect()
         text_rect.center = coords
 

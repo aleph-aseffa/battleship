@@ -50,6 +50,14 @@ def main():
                 pygame.quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
+
+                # update counter of how many ships each player has hit
+                old_ai_hits = game_board.ai_hit_ships
+                old_player_hits = game_board.player_hit_ships
+
+                # game_board.small_text("Num hit: 20", 25, (280, 575), (255, 255, 255))
+                # game_board.small_text("Num hit: 1", 25, (880, 575), (255, 255, 255))
+
                 pos = event.pos
                 valid = register_click(game_board, pos, p1)
 
@@ -57,6 +65,11 @@ def main():
                     time.sleep(0.5)  # slight delay before AI makes a move
                     comp_move = comp.make_move()
                     game_board.register_ai_hit(comp_move)
+
+                    game_board.small_text("Num hit: " + str(old_ai_hits),
+                                          "Num hit: " + str(game_board.ai_hit_ships),25, (280, 575), (0, 0, 0))
+                    game_board.small_text("Num hit: " + str(old_player_hits),
+                                          "Num hit: " + str(game_board.player_hit_ships), 25, (280, 575), (0, 0, 0))
 
 
 if __name__ == '__main__':
