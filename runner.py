@@ -43,7 +43,8 @@ def main():
 
         # process each event.
         for event in pygame.event.get():
-            game_board.small_text("test", (100, 550))
+            #game_board.small_text("test", (100, 550))
+            #game_board.small_text("another", (100, 550))
             if event.type == pygame.QUIT:
                 run = False
                 pygame.quit()

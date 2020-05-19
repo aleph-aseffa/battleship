@@ -33,13 +33,14 @@ class Board:
         # draw grids
         i = 0
         while i < 11:
+            # NOTE: +50 is the offset
             # player's grid
-            pygame.draw.lines(self.win, black, False, [(0, (i*50)), (500, (i*50))], 1)
-            pygame.draw.lines(self.win, black, False, [((i*50), 0), ((i*50), 500)], 1)
+            pygame.draw.lines(self.win, black, False, [(0+50, (i*50+50)), (500+50, (i*50+50))], 1)
+            pygame.draw.lines(self.win, black, False, [((i*50+50), 0+50), ((i*50+50), 500+50)], 1)
 
             # opponent's grid
-            pygame.draw.lines(self.win, black, False, [(600, (i*50)), (1100, (i*50))], 1)
-            pygame.draw.lines(self.win, black, False, [(600+(i*50), 0), (600+(i*50), 500)], 1)
+            pygame.draw.lines(self.win, black, False, [(600+50, (i*50+50)), (1100+50, (i*50+50))], 1)
+            pygame.draw.lines(self.win, black, False, [(600+50+(i*50), 0+50), (600+50+(i*50), 500+50)], 1)
 
             i += 1
 
@@ -48,7 +49,7 @@ class Board:
 
         # draw the ships on the user's board
         for ship in self.player_ship_locations:
-            pygame.draw.rect(self.win, blue, (ship[0]*50, ship[1]*50, 50, 50), 0)
+            pygame.draw.rect(self.win, blue, (ship[0]*50+50, ship[1]*50+50, 50, 50), 0)
 
         pygame.display.update()
 
@@ -182,15 +183,18 @@ class Board:
         green = (0, 255, 0)
 
         # check if user has already clicked on this box
-        if (x-12, y) in p.tried_positions:  # (x-12 to get rid of the offset on x values)
+        print(self.ai_ship_locations)
+        print(x-13, y-1)
+        if (x-13, y-1) in p.tried_positions:  # subtractions are to get rid of the offsets
             return False
         else:
-            p.tried_positions.add((x-12, y))
+            p.tried_positions.add((x-13, y-1))
 
-        if 11 < x < 22 and y < 10:
+        if 0 <= x-13 < 10 and 0 <= y-1 < 10:
             # check if the box contains a ship and update display accordingly
-            if (x-12, y) in self.ai_ship_locations:
+            if (x-13, y-1) in self.ai_ship_locations:
                 self.ai_hit_ships += 1
+                print(self.ai_hit_ships)
                 pygame.draw.rect(self.win, green, (x * 50, y * 50, 50, 50), 0)
             else:
                 pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
@@ -210,11 +214,11 @@ class Board:
         green = (0, 255, 0)
 
         if coord in self.player_ship_locations:
-            pygame.draw.rect(self.win, green, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
+            pygame.draw.rect(self.win, green, (coord[0] * 50+50, coord[1] * 50+50, 50, 50), 0)
             self.player_hit_ships += 1
             ship_hit = True
         else:
-            pygame.draw.rect(self.win, red, (coord[0] * 50, coord[1] * 50, 50, 50), 0)
+            pygame.draw.rect(self.win, red, (coord[0] * 50+50, coord[1] * 50+50, 50, 50), 0)
         pygame.display.update()
 
         return ship_hit
@@ -241,14 +245,20 @@ class Board:
 
     def small_text(self, message, coords):
         """
-        Writes the given message to the screen at the specified coordinates
+        Overwrites the previously displayed text and then writes the given message to
+            the screen at the specified coordinates.
         :param message: str, the message to display
         :param coords: tuple (int, int), the coordinates at which to display the text
         :return: None
         """
         pygame.font.init()
+        white = (255, 255, 255)
         black = (0, 0, 0)
 
+        # overwrite previous text
+        pygame.draw.rect(self.win, white, (coords[0], coords[1], 200, 200))
+
+        # write the new text
         font = pygame.font.Font('freesansbold.ttf', 32)
         text = font.render(message, True, black)
         text_rect = text.get_rect()
