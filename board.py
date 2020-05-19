@@ -218,3 +218,23 @@ class Board:
         pygame.display.update()
 
         return ship_hit
+
+    def display_message(self, message):
+        """
+        Overwrites the screen with the given message
+        :param message: str, the message to display
+        :return: None
+        """
+        pygame.font.init()
+        green = (0, 255, 0)
+        white = (255, 255, 255)
+
+        font = pygame.font.Font('freesansbold.ttf', 100)
+        text = font.render(message, True, green)
+        text_rect = text.get_rect()
+        text_rect.center = (1200 / 2, 600 / 2)
+
+        self.win.fill(white)
+        self.win.blit(text, text_rect)
+
+        pygame.display.update()

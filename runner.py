@@ -31,7 +31,15 @@ def main():
 
         # if all the ships of the player or of the AI have been hit, end the game.
         if game_board.player_hit_ships == 20 or game_board.ai_hit_ships == 20:
+            # declare the winner and terminate the game
+            if p1.num_hit == 20:
+                game_board.display_message("Player has won!")
+            else:
+                game_board.display_message("AI has won!")
+            time.sleep(3)
+            pygame.quit()
             run = False
+            break
 
         # process each event.
         for event in pygame.event.get():
@@ -47,12 +55,6 @@ def main():
                     time.sleep(0.5)  # slight delay before AI makes a move
                     comp_move = comp.make_move()
                     game_board.register_ai_hit(comp_move)
-
-    # declare the winner
-    if p1.num_hit == 20:
-        print("Player has won!")
-    else:
-        print("Computer has won!")
 
 
 if __name__ == '__main__':
