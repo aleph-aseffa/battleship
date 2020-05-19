@@ -66,11 +66,6 @@ def main():
                     comp_move = comp.make_move()
                     game_board.register_ai_hit(comp_move)
 
-                    game_board.small_text("Num hit: " + str(old_ai_hits),
-                                          "Num hit: " + str(game_board.ai_hit_ships),25, (280, 575), (0, 0, 0))
-                    game_board.small_text("Num hit: " + str(old_player_hits),
-                                          "Num hit: " + str(game_board.player_hit_ships), 25, (280, 575), (0, 0, 0))
-
 
 if __name__ == '__main__':
     main()
