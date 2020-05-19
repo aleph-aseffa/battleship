@@ -20,6 +20,5 @@ class AI:
                 self.tried_positions.add(spot)
                 done = True
 
-        print(f"made a move: {spot}")
         return spot
 
