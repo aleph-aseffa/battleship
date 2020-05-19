@@ -183,8 +183,6 @@ class Board:
         green = (0, 255, 0)
 
         # check if user has already clicked on this box
-        print(self.ai_ship_locations)
-        print(x-13, y-1)
         if (x-13, y-1) in p.tried_positions:  # subtractions are to get rid of the offsets
             return False
         else:
@@ -194,7 +192,6 @@ class Board:
             # check if the box contains a ship and update display accordingly
             if (x-13, y-1) in self.ai_ship_locations:
                 self.ai_hit_ships += 1
-                print(self.ai_hit_ships)
                 pygame.draw.rect(self.win, green, (x * 50, y * 50, 50, 50), 0)
             else:
                 pygame.draw.rect(self.win, red, (x * 50, y * 50, 50, 50), 0)
