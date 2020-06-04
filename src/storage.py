@@ -18,10 +18,10 @@ class Storage:
         self.db = (None, None)  # db[0] is the Connection object; db[1] is the Cursor object.
 
         # check if the database exists
-        if not path.exists("scores.db"):
+        if not path.exists("./scores.db"):
             self.create_database()
         else:
-            conn = sqlite3.connect("scores.db")
+            conn = sqlite3.connect("./scores.db")
             cursor = conn.cursor()
             self.db = (conn, cursor)
 
@@ -105,7 +105,7 @@ class Storage:
         Creates database to store scores.
         :return: None.
         """
-        conn = sqlite3.connect('scores.db')  # Connection object that represents the database
+        conn = sqlite3.connect('./scores.db')  # Connection object that represents the database
         c = conn.cursor()  # Cursor object
         c.execute('''CREATE TABLE scores
                     (id text, wins integer, total_score integer)''')

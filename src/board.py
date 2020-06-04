@@ -1,6 +1,6 @@
 import pygame
 import random
-import storage
+from src import storage
 
 
 class Board:
