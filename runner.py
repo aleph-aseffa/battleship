@@ -1,7 +1,5 @@
 import pygame
-import board
-import player
-import ai
+from src import player, ai, board
 import time
 
 
@@ -18,6 +16,10 @@ def register_click(bd, coords, p):
 
 
 def main():
+    """
+    Control flow for the game.
+    :return: None.
+    """
 
     game_board = board.Board()
     p1 = player.Player()
@@ -31,7 +33,7 @@ def main():
         clock.tick(60)
 
         # if all the ships of the player or of the AI have been hit, end the game.
-        if game_board.player_hit_ships == 1 or game_board.ai_hit_ships == 1:
+        if game_board.player_hit_ships == 20 or game_board.ai_hit_ships == 20:
             # declare the winner and end the game
             if game_board.player_hit_ships == 1:
                 game_board.fullscreen_message("AI has won!")
