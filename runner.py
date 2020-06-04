@@ -25,39 +25,30 @@ def main():
 
     run = True
     clock = pygame.time.Clock()
+    winner = None  # who won the game?
 
     while run:
         clock.tick(60)
 
         # if all the ships of the player or of the AI have been hit, end the game.
-        if game_board.player_hit_ships == 20 or game_board.ai_hit_ships == 20:
-            # declare the winner and terminate the game
-            if game_board.player_hit_ships == 20:
+        if game_board.player_hit_ships == 1 or game_board.ai_hit_ships == 1:
+            # declare the winner and end the game
+            if game_board.player_hit_ships == 1:
                 game_board.fullscreen_message("AI has won!")
+                winner = "AI"
             else:
                 game_board.fullscreen_message("Player has won!")
+                winner = game_board.info.username
             time.sleep(3)
-            pygame.quit()
             run = False
             break
 
         # process each event.
         for event in pygame.event.get():
-            #game_board.small_text("test", (100, 550))
-            #game_board.small_text("another", (100, 550))
             if event.type == pygame.QUIT:
                 run = False
-                pygame.quit()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-
-                # update counter of how many ships each player has hit
-                old_ai_hits = game_board.ai_hit_ships
-                old_player_hits = game_board.player_hit_ships
-
-                # game_board.small_text("Num hit: 20", 25, (280, 575), (255, 255, 255))
-                # game_board.small_text("Num hit: 1", 25, (880, 575), (255, 255, 255))
-
                 pos = event.pos
                 valid = register_click(game_board, pos, p1)
 
@@ -65,6 +56,11 @@ def main():
                     time.sleep(0.5)  # slight delay before AI makes a move
                     comp_move = comp.make_move()
                     game_board.register_ai_hit(comp_move)
+
+    # display the top scores
+    game_board.info.end_game(game_board.player_hit_ships, game_board.ai_hit_ships, winner)
+    # end the game
+    pygame.quit()
 
 
 if __name__ == '__main__':

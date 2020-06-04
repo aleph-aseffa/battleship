@@ -17,12 +17,11 @@ class Board:
 
         # collect user information
         # TODO: Fix check for -1
-        info = storage.Storage(self.win)
-        if info == -1:
+        self.info = storage.Storage(self.win)
+        if self.info == -1:
             pygame.quit()
         else:
             # begin game
-            print(info.username)
             self.draw_board()
             self.player_hit_ships = 0  # counter of how many of the player's ships have been hit.
             self.ai_hit_ships = 0  # counter of how many of the ai's ships have been hit.
